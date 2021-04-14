@@ -4,6 +4,8 @@ const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
 const loader = document.getElementById('loader');
+const footerName = document.getElementById('footer-name');
+const leftQuote = document.getElementById('left-quote');
 
 let apiQuotes = [];
 
@@ -11,12 +13,14 @@ let apiQuotes = [];
 function loading() {
   loader.hidden = false;
   quoteContainer.hidden = true;
+  footerName.hidden = true;
 }
 
 // Remove Loading Spinner
 function complete() {
   quoteContainer.hidden = false;
   loader.hidden = true;
+  footerName.hidden = false;
 }
 
 // Show New Quote
@@ -50,7 +54,8 @@ async function getQuotes() {
     apiQuotes = await response.json();
     newQuote();
   } catch (error) {
-    // Catch Error Here
+    complete();
+    displayTryAgain();
   }
 }
 
@@ -63,6 +68,15 @@ function tweetQuote() {
 // Event Listeners
 newQuoteBtn.addEventListener('click', newQuote);
 twitterBtn.addEventListener('click', tweetQuote);
+
+//Display Error Message
+function displayTryAgain() {
+
+  quoteText.innerText = 'Please refresh page, or try again later.';
+  authorText.innerText = '';
+  twitterBtn.hidden= true;
+  leftQuote.style.display = 'none'; 
+}
 
 // On Load
 getQuotes();
